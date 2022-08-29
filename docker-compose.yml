@@ -1,0 +1,17 @@
+version: '3'
+services:
+  java-srv:
+    build:
+      context: java-srv
+    volumes:
+      - ./java-srv/log:/root/log
+    depends_on:
+      - db
+    links:
+      - "db:db"
+
+  db:
+    build:
+      context: db
+    volumes:
+      - ./db/data_dump:/var/opt/mssql
