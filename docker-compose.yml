@@ -1,0 +1,21 @@
+version: '3'
+services:
+  java-srv:
+    build: java-srv
+    command: /bin/sh -c "sleep 50 && bloop run root"
+    volumes:
+      - ./java-srv/log:/root/log
+    links:
+      - "db:db"
+
+  seed:
+    build: seed
+    command: /bin/sh -c "/wait && ./init.sh"
+    environment:
+      - WAIT_HOSTS=db:1433
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  db:
+    build: db
